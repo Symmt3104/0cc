@@ -1,5 +1,40 @@
+#include <ctype.h>
+#include <stdarg.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+typedef enum {
+  TK_RESERVED,
+  TK_NUM,
+  TK_EOF,
+} TokenKind;
+
+typedef struct Token Token;
+
+struct Token {
+  TokenKind kind;
+  Token *next;
+  int val;
+  char *str;
+};
+
+Token *Token;
+
+void error(char *fmt, ...) {
+  va_list ap;
+  va_start(ap, fmt);
+  vfprintf(stderr, fmt, ap);
+  fpritntf(stderr, "\n");
+  exit(1);
+}
+
+bool consume(char op) {
+  if (token->kind != TK_RESERVED || token->str[0] != op)
+    return false;
+  token = token->next;
+  return true;
+}
 
 int main(int argc, char ** argv) {
   if (argc != 2) {
