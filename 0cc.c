@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef enum {
   TK_RESERVED,
@@ -19,13 +20,13 @@ struct Token {
   char *str;
 };
 
-Token *Token;
+Token *token;
 
 void error(char *fmt, ...) {
   va_list ap;
   va_start(ap, fmt);
   vfprintf(stderr, fmt, ap);
-  fpritntf(stderr, "\n");
+  fprintf(stderr, "\n");
   exit(1);
 }
 
@@ -34,6 +35,19 @@ bool consume(char op) {
     return false;
   token = token->next;
   return true;
+}
+
+int expect_number() {
+  if (token->kind != TK_NUM) {
+    error("数ではありません");
+  }
+  int val = token->val;
+  token = token->next;
+  return val;
+}
+
+bool at_eof() {
+  return token->kind == TK_EOF;
 }
 
 int main(int argc, char ** argv) {
